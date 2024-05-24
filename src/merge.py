@@ -3,6 +3,7 @@ import mujoco.viewer
 import numpy as np
 import time
 import xml.etree.ElementTree as ET
+import matplotlib.pyplot as plt
 
 class CarController:
     def __init__(self, model_path, landmarks):
@@ -23,6 +24,10 @@ class CarController:
         # Kalman filter initialization
         self.x = np.zeros(3)  # Initial state [x, y, theta]
         self.P = np.eye(3)    # Initial covariance matrix
+        # Trajectory
+        self.trajectory = []
+        self.start_flag_pos = None
+        self.end_flag_pos = None
 
     def generate_motion(self, v_left, v_right):
         v = (v_left + v_right) / 2
@@ -106,6 +111,8 @@ class CarController:
         self.x[2] = 0
 
         for i in range(len(points) - 1):
+            # Record the robot's position
+            self.trajectory.append(np.copy(self.data.qpos[:2]))
             start = points[i]
             end = points[i + 1]
             direction = np.array(end) - np.array(start)
@@ -118,6 +125,8 @@ class CarController:
             control = self.generate_motion(1.0, 1.0)
             measurements = self.generate_measurements()
             self.update_kalman_filter(control, measurements)
+        # Record the robot's position
+        self.trajectory.append(np.copy(self.data.qpos[:2]))
 
     def move_forward(self, distance, speed):
         initial_pos = np.copy(self.data.qpos[:2])
@@ -128,7 +137,28 @@ class CarController:
             self.viewer.sync()
             time.sleep(0.01)
         self.data.ctrl[self.forward_actuator_id] = 0
+    
+    def plot_trajectory(self):
+        trajectory = np.array(self.trajectory)
+        plt.figure()
+        plt.plot(trajectory[:, 0], trajectory[:, 1], marker='o', label='Trajectory')
+        
+        # Plot landmarks
+        plt.scatter(self.landmarks[:, 0], self.landmarks[:, 1], c='red', marker='x', label='Landmarks')
+        
+        # Plot start and end flags
+        if self.start_flag_pos is not None:
+            plt.scatter(self.start_flag_pos[0], self.start_flag_pos[1], c='green', marker='D', label='Start Flag')
+        if self.end_flag_pos is not None:
+            plt.scatter(self.end_flag_pos[0], self.end_flag_pos[1], c='blue', marker='D', label='End Flag')
 
+        plt.title("Robot Trajectory with Landmarks and Flags")
+        plt.xlabel("X position")
+        plt.ylabel("Y position")
+        plt.legend()
+        plt.grid()
+        plt.show()
+        
     def turn(self, angle, speed):
         target_orientation = self.angle_to_quaternion(angle)
         while True:
@@ -170,6 +200,7 @@ def update_flag_positions(xml_path, start_pos, end_pos):
                 body.set('pos', f"{end_pos[0]} {end_pos[1]} 0.2")
 
         tree.write(xml_path)
+        return start_pos[:2], end_pos[:2]
         
 if __name__ == "__main__":
     landmarks_2D_position = np.array([[1, 1], [1, -1], [-1, -1], [-1, 1]])
@@ -181,6 +212,10 @@ if __name__ == "__main__":
     ]
     # Update the XML file with new positions
     xml_file_path = "../XML/car_amers.xml"
-    update_flag_positions(xml_file_path, [points[0][0], points[0][1], 0.2], [points[-1][0], points[-1][1], 0.2])
+    start_pos, end_pos = update_flag_positions(xml_file_path, [points[0][0], points[0][1], 0.2], [points[-1][0], points[-1][1], 0.2])
+    
     car_controller = CarController(xml_file_path, landmarks_2D_position)
+    car_controller.start_flag_pos = start_pos
+    car_controller.end_flag_pos = end_pos
     car_controller.run(points)
+    car_controller.plot_trajectory()
