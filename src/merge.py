@@ -180,7 +180,7 @@ if __name__ == "__main__":
         [0, 1]   # Turn 90 degrees to the left and move forward 1 meter
     ]
     # Update the XML file with new positions
-    xml_file_path = "./XML/car_amers.xml"
+    xml_file_path = "../XML/car_amers.xml"
     update_flag_positions(xml_file_path, [points[0][0], points[0][1], 0.2], [points[-1][0], points[-1][1], 0.2])
-    car_controller = CarController("./XML/car_amers.xml", landmarks_2D_position)
+    car_controller = CarController(xml_file_path, landmarks_2D_position)
     car_controller.run(points)
