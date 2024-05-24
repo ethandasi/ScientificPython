@@ -1,11 +1,19 @@
 # ScientificPython
 
-## Cahier des charges
+## Project Description
 
-Étant donné un environnement 2D plan muni de trois amers parfaitement distinguables préalablement localisées de manière absolue,
+This project is developed as part of the curriculum at UPSSITECH, an engineering school in Toulouse, France. The project is carried out during a semester abroad at Pázmány Péter Catholic University (PPKE) in Budapest, Hungary. The goal of the project is to implement a system for mobile robot localization and control in a 2D environment using both odometry and landmark perception. Additionally, the system aims to integrate A* algorithm for path planning with obstacles.
 
-1. en parallèle à 2 ci-dessous : localiser séquentiellement un robot mobile non holonome en mouvement sur la base de (1) son odométrie ; (2) la perception des coordonnées cartésiennes relatives de chacun de ces amers (ou bien du couple azimut-distance relatif à chaque amer) depuis le robot ; le volet proprioperception et perception des amers serait réduit à la simulation des déplacements et des mesures relatives aux amers (pas de technique de computer vision, analyse d’image, détection-étiquetage d’amers, odométrie optique, etc.) ; le moteur de localisation serait le filtre de Kalman (extension non linéaire) ;
+## Program Description
 
-2. en parallèle à 1 ci-dessus : commander un robot mobile non holonome que l’on suppose localisé exacte de manière absolue (position2D et orientation absolues) de telle sorte qu’il s’asservisse sur la trajectoire (chemin + loi horaire) d’un robot de référence ; techniques de commande de robots mobiles ;
+### Localization and Control
+The program consists of a class called `CarController`, which is responsible for controlling a non-holonomic mobile robot in a 2D environment. The robot's localization is achieved through odometry and landmark perception using the Kalman filter. The program utilizes the Mujoco physics engine for simulation.
 
-3. faire se rejoindre les points 1 et 2 ci-dessus de telle sorte que l’asservissement sur une trajectoire de référence s’effectue sur la localisation obtenue obtenue par Kalman au lieu d’une supposée localisation exacte.
+### Path Planning with A* Algorithm
+In addition to the localization and control system, the program also includes an implementation of the A* algorithm for path planning. The `AStarPlanner` class generates a collision-free path from a start point to a goal point in a grid-based environment with obstacles.
+
+## Future Improvements
+One of the future improvements planned for this project is the integration of the A* algorithm with obstacle avoidance capabilities into the mobile robot control system. This enhancement will enable the robot to navigate dynamically changing environments while avoiding obstacles efficiently.
+
+---
+This README file was generated as part of the project undertaken at UPSSITECH, Toulouse, France, during a semester abroad at PPKE, Budapest, Hungary.
