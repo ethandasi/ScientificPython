@@ -2,7 +2,7 @@
 
 ## Project Description
 
-This project is developed as part of the curriculum at UPSSITECH, an engineering school in Toulouse, France. The project is carried out during a semester abroad at Pázmány Péter Catholic University (PPKE) in Budapest, Hungary. The goal of the project is to implement a system for mobile robot localization and control in a 2D environment using both odometry and landmark perception. Additionally, the system aims to integrate A* algorithm for path planning with obstacles.
+This project is developed as part of the curriculum at UPSSITECH, an engineering school in Toulouse, France. The project is carried out during a semester abroad at Pázmány Péter Catholic University (PPKE) in Budapest, Hungary. The goal of the project is to implement a system for mobile robot localization and control in a 2D environment using both odometry and landmark perception and in a Mujoco 3D simulation environment. Additionally, the system aims to integrate A* algorithm for path planning with obstacles.
 
 ## Program Description
 
