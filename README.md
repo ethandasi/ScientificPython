@@ -12,7 +12,6 @@ Given a 2D plane environment equipped with three perfectly distinguishable landm
 2. in parallel to 1 above: command a non-holonomic mobile robot that is assumed to be precisely located in an absolute manner (2D position and absolute orientation) in such a way that it follows the trajectory (path + timing law) of a reference robot; mobile robot control techniques;
 
 3. bring together the points 1 and 2 above in such a way that the tracking on a reference trajectory is performed on the localization obtained by Kalman instead of a presumed exact localization.
-```
 
 ## Program Description
 
