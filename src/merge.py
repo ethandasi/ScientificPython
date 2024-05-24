@@ -121,8 +121,8 @@ class CarController:
             angle = np.arctan2(np.sin(angle), np.cos(angle))
             self.turn(angle, 4)
             self.move_forward(distance, 4)
-
-            control = self.generate_motion(1.0, 1.0)
+            lw,rw=self.get_wheel_speeds()
+            control = self.generate_motion(lw,rw)
             measurements = self.generate_measurements()
             self.update_kalman_filter(control, measurements)
         # Record the robot's position
@@ -206,9 +206,9 @@ if __name__ == "__main__":
     landmarks_2D_position = np.array([[1, 1], [1, -1], [-1, -1], [-1, 1]])
     points = [
         [0, 0],  # Starting point
-        [1, 0],  
-        [1, 0.5],  
-        [0, 1]   
+        [1, 0],  # Move forward 1 meter
+        [1, 0.5],  # Turn 90 degrees to the left and move forward 1 meter
+        [0, 1]   # Turn 90 degrees to the left and move forward 1 meter
     ]
     # Update the XML file with new positions
     xml_file_path = "../XML/car_amers.xml"
